@@ -1,0 +1,59 @@
+﻿<Window x:Class="WPFApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFApp"
+        mc:Ignorable="d"
+        Title="WPF Test" Height="350" Width="550" Background="DarkKhaki">
+    <DockPanel Margin="20">
+
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock x:Name="lblError" Visibility="Collapsed" Foreground="Red" HorizontalAlignment="Center"></TextBlock>
+        </DockPanel>
+        
+        <Button DockPanel.Dock="Top" x:Name="btnStart" Click="btnStart_Click" Width="130" FontSize="18">START</Button>
+        
+        <!--<DockPanel DockPanel.Dock="Top" Height="25" >
+            <TextBox x:Name="txtLocation" Text="Location" TextAlignment="Center" TextWrapping="Wrap" Width="200" />
+            <Button x:Name="btnSubmit" Click="btnSubmit_Click" Width="130" HorizontalAlignment="Right">Submit</Button>
+        </DockPanel>-->
+
+        <DockPanel x:Name="pnlLoading" DockPanel.Dock="Top" Visibility="Collapsed" Margin="0,20,0,0">
+            <TextBlock Text="Loading questions..." FontSize="20" HorizontalAlignment="Center"></TextBlock>
+        </DockPanel>
+
+        <Border x:Name="bdrQuestionPanel" BorderThickness="2" BorderBrush="Black" Padding="10" DockPanel.Dock="Top" Margin="0,10,0,0" Visibility="Visible">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,10">
+                    <TextBlock x:Name="lblQuestionNumber" FontSize="20" TextAlignment="Left" TextWrapping="Wrap" Padding="10,0,0,0">Question 0</TextBlock>
+                    <TextBlock x:Name="lblQuestionCategory" FontSize="20" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" Padding="0,0,10,0" Width="300">Category</TextBlock>
+                </DockPanel>
+                
+                <StackPanel>
+                    <TextBlock x:Name="lblQuestion" FontSize="20" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">This is a very long question with a very simple answer. What is the correct answer that you should definitely select?</TextBlock>
+                </StackPanel>
+
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" Grid.Column="0" x:Name="btnOption1" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click">Option 1</Button>
+                    <Button Grid.Row="0" Grid.Column="1" x:Name="btnOption2" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click">Option 2</Button>
+
+                    <Button Grid.Row="1" Grid.Column="0" x:Name="btnOption3" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click">Option 3</Button>
+                    <Button Grid.Row="1" Grid.Column="1" x:Name="btnOption4" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click">Option 4</Button>
+
+                </Grid>
+
+                <Button x:Name="btnNextQuestion" Content="Next Question" Visibility="Collapsed" Click="btnNextQuestion_Click"></Button>
+            </StackPanel>
+        </Border>
+    </DockPanel>
+</Window>
