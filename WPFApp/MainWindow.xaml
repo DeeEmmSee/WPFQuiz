@@ -6,6 +6,20 @@
         xmlns:local="clr-namespace:WPFApp"
         mc:Ignorable="d"
         Title="WPF Test" Height="350" Width="550" Background="DarkKhaki">
+    <Window.Resources>
+        <Style x:Key="NoHoverButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
     <DockPanel Margin="20">
 
         <DockPanel DockPanel.Dock="Top">
@@ -23,6 +37,16 @@
             <TextBlock Text="Loading questions..." FontSize="20" HorizontalAlignment="Center"></TextBlock>
         </DockPanel>
 
+        <DockPanel x:Name="pnlEndGame" DockPanel.Dock="Top" Visibility="Collapsed" Margin="0,20,0,0" HorizontalAlignment="Center">
+            <DockPanel DockPanel.Dock="Top">
+                <TextBlock Text="Final Score: " FontSize="20" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="txtScore" Text="10" FontSize="20" HorizontalAlignment="Center"></TextBlock>
+            </DockPanel>
+            <StackPanel Margin="0,10,0,0">
+                <Button x:Name="btnRestart" Content="Restart?" Click="btnStart_Click" FontSize="20" ></Button>
+            </StackPanel>
+        </DockPanel>
+        
         <Border x:Name="bdrQuestionPanel" BorderThickness="2" BorderBrush="Black" Padding="10" DockPanel.Dock="Top" Margin="0,10,0,0" Visibility="Visible">
             <StackPanel>
                 <DockPanel Margin="0,0,0,10">
@@ -44,11 +68,11 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <Button Grid.Row="0" Grid.Column="0" x:Name="btnOption1" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click">Option 1</Button>
-                    <Button Grid.Row="0" Grid.Column="1" x:Name="btnOption2" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click">Option 2</Button>
+                    <Button Grid.Row="0" Grid.Column="0" x:Name="btnOption1" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click" Content="Option 1" Style="{StaticResource NoHoverButton}"></Button>
+                    <Button Grid.Row="0" Grid.Column="1" x:Name="btnOption2" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click" Content="Option 2" Style="{StaticResource NoHoverButton}"></Button>
 
-                    <Button Grid.Row="1" Grid.Column="0" x:Name="btnOption3" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click">Option 3</Button>
-                    <Button Grid.Row="1" Grid.Column="1" x:Name="btnOption4" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click">Option 4</Button>
+                    <Button Grid.Row="1" Grid.Column="0" x:Name="btnOption3" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click" Content="Option 3" Style="{StaticResource NoHoverButton}"></Button>
+                    <Button Grid.Row="1" Grid.Column="1" x:Name="btnOption4" FontSize="20" Foreground="Black" Background="FloralWhite" Margin="5" Click="btnSubmitAnswer_Click" Content="Option 4" Style="{StaticResource NoHoverButton}"></Button>
 
                 </Grid>
 

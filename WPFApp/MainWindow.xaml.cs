@@ -25,6 +25,7 @@ namespace WPFApp
     {
         OTDQuestion[] Questions;
         int QuestionIndex= -1;
+        int Correct = 0;
 
         public MainWindow()
         {
@@ -37,6 +38,8 @@ namespace WPFApp
         private async void btnStart_Click(object sender, RoutedEventArgs e)
         {
             btnStart.Visibility = Visibility.Collapsed;
+            pnlEndGame.Visibility = Visibility.Collapsed;
+            Correct = 0;
 
             try
             {
@@ -61,12 +64,32 @@ namespace WPFApp
 
         private void btnSubmitAnswer_Click(object sender, RoutedEventArgs e)
         {
+            btnOption1.IsEnabled = false;
+            btnOption2.IsEnabled = false;
+            btnOption3.IsEnabled = false;
+            btnOption4.IsEnabled = false;
 
             // Show correct answer
-            bool correct = "" == Questions[QuestionIndex].CorrectAnswer;
+            bool correct = (e.Source as Button).Content == Questions[QuestionIndex].CorrectAnswer;
 
-            //Brushes.ForestGreen
-            //Brushes.IndianRed
+            (e.Source as Button).Background = correct ? Brushes.ForestGreen : Brushes.IndianRed;
+
+            if (correct)
+                Correct++;
+
+            if (btnOption1.Background != Brushes.IndianRed)
+                btnOption1.Background = (btnOption1.Content.ToString() == Questions[QuestionIndex].CorrectAnswer ? Brushes.ForestGreen : Brushes.FloralWhite);
+            
+            if (btnOption2.Background != Brushes.IndianRed)
+                btnOption2.Background = (btnOption2.Content.ToString() == Questions[QuestionIndex].CorrectAnswer ? Brushes.ForestGreen : Brushes.FloralWhite);
+            
+            if (btnOption3.Background != Brushes.IndianRed)
+                btnOption3.Background = (btnOption3.Content.ToString() == Questions[QuestionIndex].CorrectAnswer ? Brushes.ForestGreen : Brushes.FloralWhite);
+            
+            if (btnOption4.Background != Brushes.IndianRed)
+                btnOption4.Background = (btnOption4.Content.ToString() == Questions[QuestionIndex].CorrectAnswer ? Brushes.ForestGreen : Brushes.FloralWhite);
+
+            btnNextQuestion.Visibility = Visibility.Visible;
         }
 
         private void SetNextQuestion()
@@ -78,9 +101,17 @@ namespace WPFApp
             if (QuestionIndex >= Questions.Length)
             {
                 // End of game
+                bdrQuestionPanel.Visibility = Visibility.Collapsed;
+                pnlEndGame.Visibility = Visibility.Visible;
+                txtScore.Text = Correct.ToString();
             }
             else
             {
+                btnOption1.IsEnabled = true;
+                btnOption2.IsEnabled = true;
+                btnOption3.IsEnabled = true;
+                btnOption4.IsEnabled = true;
+
                 // Next question
                 // NOTE: Text from the API can come out HTML encoded
                 lblQuestionNumber.Text = $"Question {QuestionIndex + 1}";
