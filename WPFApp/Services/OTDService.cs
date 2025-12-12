@@ -14,7 +14,7 @@ namespace WPFApp.Services
     public class OTDService
     {
         string BaseURL = "https://opentdb.com/api.php";
-        public async Task<OTDQuestion[]> GetQuestions(int amount = 1)
+        public async Task<OTDQuestion[]> GetQuestions(int amount = 10)
         {
             OTDQuestion[] questions = [];
 
