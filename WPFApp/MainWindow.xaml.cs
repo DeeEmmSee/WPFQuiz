@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Media;
 using System.Text;
 using System.Web;
 using System.Windows;
@@ -7,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -24,8 +27,9 @@ namespace WPFApp
     public partial class MainWindow : Window
     {
         OTDQuestion[] Questions;
-        int QuestionIndex= -1;
+        int QuestionIndex = -1;
         int Correct = 0;
+        int msTimePerLetter = 50;
 
         public MainWindow()
         {
@@ -33,6 +37,7 @@ namespace WPFApp
 
             Questions = [];
             bdrQuestionPanel.Visibility = Visibility.Collapsed;
+
         }
 
         private async void btnStart_Click(object sender, RoutedEventArgs e)
@@ -75,7 +80,22 @@ namespace WPFApp
             (e.Source as Button).Background = correct ? Brushes.ForestGreen : Brushes.IndianRed;
 
             if (correct)
+            {
                 Correct++;
+                using (MemoryStream stream = new MemoryStream(Properties.Resources.correct))
+                {
+                    correctSound = new SoundPlayer(stream);
+                    correctSound.Play();
+                }
+            }
+            else
+            {
+                using (MemoryStream stream = new MemoryStream(Properties.Resources.incorrect))
+                {
+                    incorrectSound = new SoundPlayer(stream);
+                    incorrectSound.Play();
+                }
+            }
 
             if (btnOption1.Background != Brushes.IndianRed)
                 btnOption1.Background = (btnOption1.Content.ToString() == Questions[QuestionIndex].CorrectAnswer ? Brushes.ForestGreen : Brushes.FloralWhite);
@@ -116,8 +136,26 @@ namespace WPFApp
                 // NOTE: Text from the API can come out HTML encoded
                 lblQuestionNumber.Text = $"Question {QuestionIndex + 1}";
                 lblQuestionCategory.Text = HttpUtility.HtmlDecode(Questions[QuestionIndex].Category);
-                lblQuestion.Text = HttpUtility.HtmlDecode(Questions[QuestionIndex].Question); 
-                                
+                //lblQuestion.Text = HttpUtility.HtmlDecode(Questions[QuestionIndex].Question); 
+
+                string? qText = HttpUtility.HtmlDecode(Questions[QuestionIndex].Question);
+
+                // Animation
+                StringAnimationUsingKeyFrames saukf = new StringAnimationUsingKeyFrames();
+                TimeSpan ts = new TimeSpan(0, 0, 0, 0, msTimePerLetter);
+                saukf.Duration = new TimeSpan(0, 0, 0, 0, qText.Length * msTimePerLetter);
+                saukf.FillBehavior = FillBehavior.HoldEnd;
+                
+                string tmp = "";
+                foreach (char c in qText)
+                {
+                    tmp += c;
+                    ts = ts.Add(TimeSpan.FromMilliseconds(msTimePerLetter));
+                    saukf.KeyFrames.Add(new DiscreteStringKeyFrame(tmp, KeyTime.FromTimeSpan(ts)));
+                }
+
+                lblQuestion.BeginAnimation(TextBlock.TextProperty, saukf);
+
                 List<string> answers = Questions[QuestionIndex].IncorrectAnswers.ToList();
                 answers.Add(Questions[QuestionIndex].CorrectAnswer);
 
